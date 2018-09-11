@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <style>
+      video {
+        position: absolute;
+        width: 200px;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var features = ["rightEye","leftEye","mouth"];
+
+        for(i = 0; i < features.length; i++) {
+          var vid = document.createElement("video");
+          var vid_url = features[i];
+          vid.src = vid_url + ".mp4";
+          vid.type = "video/mp4"
+          document.body.appendChild(vid);
+          vid.autoplay = true;
+          vid.muted = true;
+          vid.loop = true;
+          vid.id = vid_url + "_vid";
+          var min = Math.ceil(0);
+          var max_x = Math.floor(window.innerWidth - 200);
+          var max_y = Math.floor(window.innerHeight - 113);
+          var ran_x = Math.floor(Math.random() * (max_x - min + 1)) + min;
+          var ran_y = Math.floor(Math.random() * (max_y - min + 1)) + min;
+          vid.style.left = ran_x;
+          vid.style.top = ran_y;
+        }
+
+        var videos = document.getElementsByTagName("VIDEO");
+
+        for (i = 0; i < videos.length; i++) {
+          var video = videos[i].id;
+          dragElement(document.getElementById(video));
+        }
+
+        function dragElement(elmnt) {
+          var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+          elmnt.onmousedown = dragMouseDown;
+
+          function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+          }
+
+          function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+          }
+
+          function closeDragElement() {
+            /* stop moving when mouse button is released:*/
+            document.onmouseup = null;
+            document.onmousemove = null;
+          }
+        }
+      })
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
