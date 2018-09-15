@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript">
+
+			var socket = io.connect();
+
+			socket.on('connect', function() {
+				console.log("Connected");
+			});
+
+			// Receive from any event
+			socket.on('chatmessage', function(data) {
+				console.log(data);
+				var msg = document.createElement('LI')
+				msg.innerHTML = "" + data;
+				document.getElementById('messages').appendChild(msg);
+			});
+
+			socket.on('color', function(opacity) {
+				document.getElementById('messages').style.backgroundColor = rgb(opacity,opacity,opacity);
+			});
+
+			var sendmessage = function(message) {
+				console.log("chatmessage: " + message);
+				socket.emit('chatmessage', message);
+			};
+
+
+		</script>
+	</head>
+ <body>
+ <ul id="messages">
+ No Messages Yet
+ </ul>
+ <input type="text" id="message" name="message">
+ <input type="submit" value="submit" onclick="sendmessage(document.getElementById('message').value);">
+ </body>
+</html>
