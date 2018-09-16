@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="socket.io.js"></script>
 		<script type="text/javascript">
 
 			var socket = io.connect();
@@ -18,7 +18,7 @@
 			});
 
 			socket.on('color', function(opacity) {
-				document.getElementById('messages').style.backgroundColor = rgb(opacity,opacity,opacity);
+				document.getElementById('messages').style.backgroundColor = "rgb(" + opacity + "," + opacity + "," + opacity + ")";
 			});
 
 			var sendmessage = function(message) {
@@ -26,8 +26,14 @@
 				socket.emit('chatmessage', message);
 			};
 
-
 		</script>
+		<style>
+			ul {
+				list-style-type: none;
+			  margin: 0;
+			  padding: 0;
+			}
+		</style>
 	</head>
  <body>
  <ul id="messages">
