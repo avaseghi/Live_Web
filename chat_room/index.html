@@ -5,33 +5,34 @@
 
 			var socket = io.connect();
 
-			socket.on('connect', function() {
-				console.log("Connected");
+			socket.on('connect', function(clientInfo) {
+				var person = prompt("Please enter your name to join the chat", "Name");
+				if (person != null) {
+				   socket.emit('storeClientInfo', { customId: person });
+				}
 			});
 
 			// Receive from any event
 			socket.on('chatmessage', function(data) {
-				console.log(data);
+				console.log(data.text);
 				var msg = document.createElement('LI')
-				msg.innerHTML = "" + data;
+				msg.innerHTML = data.username + " says: " + data.text;
+				msg.style.backgroundColor = "rgb(" + data.bgroundColor + "," + data.bgroundColor + "," + data.bgroundColor + ")";
 				document.getElementById('messages').appendChild(msg);
-			});
-
-			socket.on('color', function(opacity) {
-				document.getElementById('messages').style.backgroundColor = "rgb(" + opacity + "," + opacity + "," + opacity + ")";
 			});
 
 			var sendmessage = function(message) {
 				console.log("chatmessage: " + message);
 				socket.emit('chatmessage', message);
+				document.getElementById('message').value = "";
 			};
 
 		</script>
 		<style>
 			ul {
 				list-style-type: none;
-			  	margin: 0;
-			  	padding: 0;
+			  margin: 0;
+			  padding: 0;
 			}
 		</style>
 	</head>
